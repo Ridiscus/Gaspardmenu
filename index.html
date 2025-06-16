@@ -5,26 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Menu - Gaspard</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .menu-category { display: none; }
+    .menu-category.active { display: block; }
+    nav ul li a.active { color: gold; font-weight: bold; }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 1rem;
+      background-color: #f2f2f2;
+    }
+
+    .admin-btn {
+      display: block;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .admin-btn a {
+      background-color: #000;
+      color: #fff;
+      padding: 0.7rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>Gaspard</h1>
     <nav>
       <ul>
-        <li><a href="#entrees">ENTRÉES</a></li>
-        <li><a href="#plats" class="active">PLATS</a></li>
-        <li><a href="#desserts">DESSERTS</a></li>
-        <li><a href="#boissons">BOISSONS</a></li>
+        <li><a href="#" class="tab-link active" data-target="entrees">ENTRÉES</a></li>
+        <li><a href="#" class="tab-link" data-target="plats">PLATS</a></li>
+        <li><a href="#" class="tab-link" data-target="desserts">DESSERTS</a></li>
+        <li><a href="#" class="tab-link" data-target="boissons">BOISSONS</a></li>
       </ul>
     </nav>
   </header>
 
   <main class="menu-section">
-
-    <!-- Entrées -->
-    <section id="entrees" class="menu-category">
+    <section id="entrees" class="menu-category active">
       <h2>Entrées</h2>
-
       <div class="menu-item">
         <img src="salade.jpg" alt="Salade fraîche" />
         <div class="menu-item-content">
@@ -46,10 +69,8 @@
       </div>
     </section>
 
-    <!-- Plats -->
     <section id="plats" class="menu-category">
       <h2>Plats</h2>
-
       <div class="menu-item">
         <img src="poulet.jpg" alt="Poulet et frites" />
         <div class="menu-item-content">
@@ -91,7 +112,6 @@
       </div>
     </section>
 
-    <!-- Desserts -->
     <section id="desserts" class="menu-category">
       <h2>Desserts</h2>
 
@@ -114,11 +134,12 @@
           <a href="#" class="order-btn">Commander</a>
         </div>
       </div>
+  
     </section>
 
-    <!-- Boissons -->
     <section id="boissons" class="menu-category">
       <h2>Boissons</h2>
+      <!-- ... tes boissons ... -->
 
       <div class="menu-item">
         <img src="poulet.jpg" alt="Jus naturel" />
@@ -139,11 +160,40 @@
           <a href="#" class="order-btn">Commander</a>
         </div>
       </div>
+
     </section>
+
+    <div class="admin-btn">
+      <a href="login.html">Connexion Admin</a>
+    </div>
   </main>
 
   <footer>
     &copy; 2025 Gaspard | Service propulsé par MenuFlash
   </footer>
+
+  <script>
+    const links = document.querySelectorAll(".tab-link");
+    const sections = document.querySelectorAll(".menu-category");
+
+    links.forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        // Supprimer "active" de tous les liens
+        links.forEach(l => l.classList.remove("active"));
+        link.classList.add("active");
+
+        // Masquer toutes les sections
+        sections.forEach(section => section.classList.remove("active"));
+
+        // Afficher la section sélectionnée
+        const target = document.getElementById(link.dataset.target);
+        if (target) {
+          target.classList.add("active");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
