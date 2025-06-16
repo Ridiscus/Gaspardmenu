@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion Admin</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #ffd700;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+    }
+
+    form {
+      background-color: #111;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    }
+
+    input {
+      padding: 0.7rem;
+      margin-bottom: 1rem;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #ffd700;
+      color: #000;
+      font-weight: bold;
+      padding: 0.7rem;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .error {
+      color: red;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Connexion Admin</h1>
+
+  <form onsubmit="verifierMotDePasse(event)">
+    <input type="password" id="motdepasse" placeholder="Mot de passe admin" required />
+    <button type="submit">Se connecter</button>
+    <div class="error" id="erreur"></div>
+  </form>
+
+  <script>
+    function verifierMotDePasse(e) {
+      e.preventDefault();
+      const motdepasse = document.getElementById("motdepasse").value;
+      const erreur = document.getElementById("erreur");
+
+      if (motdepasse === "admin2025") {
+        window.location.href = "dashboard.html";
+      } else {
+        erreur.textContent = "Mot de passe incorrect. Réessaye.";
+      }
+    }
+  </script>
+
+</body>
+</html>
