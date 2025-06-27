@@ -6,16 +6,54 @@
   <title>Menu - Gaspard</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .menu-category { display: none; }
-    .menu-category.active { display: block; }
-    nav ul li a.active { color: gold; font-weight: bold; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #000;
+      color: #ffd700;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+    }
+
+    nav ul li a.active {
+      background-color: #ffd700;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .menu-category {
+      display: none;
+      padding: 1rem;
+    }
+
+    .menu-category.active {
+      display: block;
+    }
 
     .menu-item {
       display: flex;
-      margin: 1rem 0;
       gap: 1rem;
       border-bottom: 1px solid #ccc;
-      padding-bottom: 1rem;
+      padding: 1rem 0;
     }
 
     .menu-item img {
@@ -29,16 +67,9 @@
       margin-top: 0.5rem;
     }
 
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      padding: 1rem;
-      background-color: #f2f2f2;
-    }
-
     .admin-btn {
       text-align: center;
-      margin-top: 2rem;
+      margin: 2rem 0;
     }
 
     .admin-btn a {
@@ -47,6 +78,13 @@
       padding: 0.7rem 1.5rem;
       border-radius: 5px;
       text-decoration: none;
+    }
+
+    footer {
+      background-color: #f2f2f2;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
     }
   </style>
 </head>
@@ -64,25 +102,10 @@
   </header>
 
   <main class="menu-section">
-    <section id="Entrées" class="menu-category active">
-      <h2>Entrées</h2>
-      <div class="menu-items"></div>
-    </section>
-
-    <section id="Plats" class="menu-category">
-      <h2>Plats</h2>
-      <div class="menu-items"></div>
-    </section>
-
-    <section id="Desserts" class="menu-category">
-      <h2>Desserts</h2>
-      <div class="menu-items"></div>
-    </section>
-
-    <section id="Boissons" class="menu-category">
-      <h2>Boissons</h2>
-      <div class="menu-items"></div>
-    </section>
+    <section id="Entrées" class="menu-category active"><h2>Entrées</h2><div class="menu-items"></div></section>
+    <section id="Plats" class="menu-category"><h2>Plats</h2><div class="menu-items"></div></section>
+    <section id="Desserts" class="menu-category"><h2>Desserts</h2><div class="menu-items"></div></section>
+    <section id="Boissons" class="menu-category"><h2>Boissons</h2><div class="menu-items"></div></section>
 
     <div class="admin-btn">
       <a href="login.html">Connexion Admin</a>
@@ -112,15 +135,15 @@
 
     const platsRef = collection(db, "plats");
 
+    const categories = {
+      "Entrées": document.querySelector("#Entrées .menu-items"),
+      "Plats": document.querySelector("#Plats .menu-items"),
+      "Desserts": document.querySelector("#Desserts .menu-items"),
+      "Boissons": document.querySelector("#Boissons .menu-items")
+    };
+
     async function chargerMenu() {
       const snapshot = await getDocs(platsRef);
-      const categories = {
-        "Entrées": document.querySelector("#Entrées .menu-items"),
-        "Plats": document.querySelector("#Plats .menu-items"),
-        "Desserts": document.querySelector("#Desserts .menu-items"),
-        "Boissons": document.querySelector("#Boissons .menu-items")
-      };
-
       snapshot.forEach(doc => {
         const plat = doc.data();
         const container = categories[plat.categorie];
@@ -143,7 +166,7 @@
 
     chargerMenu();
 
-    // Gestion des onglets
+    // Onglet navigation
     const links = document.querySelectorAll(".tab-link");
     const sections = document.querySelectorAll(".menu-category");
 
@@ -152,7 +175,6 @@
         e.preventDefault();
         links.forEach(l => l.classList.remove("active"));
         link.classList.add("active");
-
         sections.forEach(section => section.classList.remove("active"));
         const target = document.getElementById(link.dataset.target);
         if (target) target.classList.add("active");
