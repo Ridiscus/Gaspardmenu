@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Admin - Gaspard</title>
   <style>
     body {
       background-color: #000;
       color: #ffd700;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
+      font-family: Arial, sans-serif;
       padding: 2rem;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
     }
     form {
       background-color: #111;
@@ -26,8 +21,8 @@
       width: 100%;
       padding: 0.7rem;
       margin: 0.5rem 0;
-      border: none;
       border-radius: 5px;
+      border: none;
     }
     button {
       background-color: #ffd700;
@@ -37,8 +32,8 @@
       font-weight: bold;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 1rem;
       width: 100%;
+      margin-top: 1rem;
     }
     .menu-list {
       margin-top: 2rem;
@@ -51,138 +46,13 @@
     }
   </style>
 </head>
-
-
-<!-- Firebase SDK -->
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    deleteDoc,
-    doc,
-    updateDoc
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBBHgFgHj-lYqbOxWMcaKz2xjYdUiZR-Bo",
-    authDomain: "menuflash-611ea.firebaseapp.com",
-    projectId: "menuflash-611ea",
-    storageBucket: "menuflash-611ea.firebasestorage.app",
-    messagingSenderId: "106561887216",
-    appId: "1:106561887216:web:21164e3b875159511d9b35"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const platsRef = collection(db, "plats");
-
-  let indexModification = null;
-  let plats = [];
-
-  const form = document.getElementById("formAjout");
-  const nom = document.getElementById("nom");
-  const prix = document.getElementById("prix");
-  const image = document.getElementById("image");
-  const description = document.getElementById("description");
-  const categorie = document.getElementById("categorie");
-  const statut = document.getElementById("statut");
-  const btnSubmit = document.getElementById("btnSubmit");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const nouveauPlat = {
-      nom: nom.value,
-      prix: prix.value,
-      image: image.value,
-      description: description.value,
-      categorie: categorie.value,
-      statut: statut.value
-    };
-
-    try {
-      if (indexModification === null) {
-        await addDoc(platsRef, nouveauPlat);
-      } else {
-        await updateDoc(doc(db, "plats", plats[indexModification].id), nouveauPlat);
-        indexModification = null;
-        btnSubmit.textContent = "Ajouter";
-      }
-
-      form.reset();
-      chargerPlats();
-    } catch (error) {
-      console.error("Erreur :", error);
-    }
-  });
-
-  async function chargerPlats() {
-    plats = [];
-    const snapshot = await getDocs(platsRef);
-    snapshot.forEach((docPlat) => {
-      plats.push({ id: docPlat.id, ...docPlat.data() });
-    });
-    afficherPlats();
-  }
-
-  function afficherPlats() {
-    const liste = document.getElementById("listePlats");
-    liste.innerHTML = "";
-    plats.forEach((plat, index) => {
-      const div = document.createElement("div");
-      div.className = "plat";
-      div.innerHTML = `
-        <strong>${plat.nom}</strong> - ${plat.prix} FCFA<br>
-        <em>${plat.categorie} | ${plat.statut}</em><br>
-        <p>${plat.description}</p>
-        <img src="${plat.image}" alt="${plat.nom}" style="width:100px;height:auto;margin-top:0.5rem;"><br>
-        <button onclick="modifierPlat(${index})">Modifier</button>
-        <button onclick="supprimerPlat('${plat.id}')" style="margin-top:0.5rem;background:#b22222;color:white;">Supprimer</button>
-      `;
-      liste.appendChild(div);
-    });
-  }
-
-  window.modifierPlat = function(index) {
-    const plat = plats[index];
-    nom.value = plat.nom;
-    prix.value = plat.prix;
-    image.value = plat.image;
-    description.value = plat.description;
-    categorie.value = plat.categorie;
-    statut.value = plat.statut;
-    indexModification = index;
-    btnSubmit.textContent = "Mettre à jour";
-  };
-
-  window.supprimerPlat = async function(id) {
-    await deleteDoc(doc(db, "plats", id));
-    chargerPlats();
-  };
-
-  chargerPlats();
-</script>
-
-
-
-
-
-
-
-
-
-
 <body>
   <h1>Dashboard Admin - Gaspard</h1>
 
   <form id="formAjout">
-    <input type="text" id="nom" placeholder="Nom du plat" required />
-    <input type="text" id="prix" placeholder="Prix" required />
-    <input type="text" id="image" placeholder="Lien de l'image" required />
+    <input type="text" id="nom" placeholder="Nom du plat" required>
+    <input type="text" id="prix" placeholder="Prix" required>
+    <input type="text" id="image" placeholder="Lien de l'image" required>
     <textarea id="description" placeholder="Description du plat" rows="3" required></textarea>
     <select id="categorie">
       <option value="Entrées">Entrée</option>
@@ -194,12 +64,84 @@
       <option value="Disponible">Disponible</option>
       <option value="Indisponible">Indisponible</option>
     </select>
-    <button type="submit" id="btnSubmit">Ajouter</button>
+    <button type="submit">Ajouter</button>
   </form>
 
-  <div class="menu-list" id="listePlats">
-    <!-- Liste des plats ici -->
-  </div>
+  <div class="menu-list" id="listePlats"></div>
 
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      deleteDoc,
+      doc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBBHgFgHj-lYqbOxWMcaKz2xjYdUiZR-Bo",
+      authDomain: "menuflash-611ea.firebaseapp.com",
+      projectId: "menuflash-611ea",
+      storageBucket: "menuflash-611ea.appspot.com",
+      messagingSenderId: "106561887216",
+      appId: "1:106561887216:web:21164e3b875159511d9b35"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const platsCollection = collection(db, "plats");
+
+    const form = document.getElementById("formAjout");
+    const listePlats = document.getElementById("listePlats");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const plat = {
+        nom: form.nom.value,
+        prix: form.prix.value,
+        image: form.image.value,
+        description: form.description.value,
+        categorie: form.categorie.value,
+        statut: form.statut.value
+      };
+      try {
+        await addDoc(platsCollection, plat);
+        form.reset();
+        chargerPlats();
+      } catch (err) {
+        alert("Erreur d'ajout : " + err.message);
+      }
+    });
+
+    async function chargerPlats() {
+      listePlats.innerHTML = "";
+      const snapshot = await getDocs(platsCollection);
+      snapshot.forEach(docSnap => {
+        const plat = docSnap.data();
+        const id = docSnap.id;
+
+        const div = document.createElement("div");
+        div.className = "plat";
+        div.innerHTML = `
+          <strong>${plat.nom}</strong> - ${plat.prix} FCFA<br>
+          <em>${plat.categorie} | ${plat.statut}</em><br>
+          <p>${plat.description}</p>
+          <img src="${plat.image}" style="width:100px;height:auto;margin-top:0.5rem;"><br>
+          <button onclick="supprimerPlat('${id}')">Supprimer</button>
+        `;
+        listePlats.appendChild(div);
+      });
+    }
+
+    window.supprimerPlat = async function(id) {
+      await deleteDoc(doc(db, "plats", id));
+      chargerPlats();
+    }
+
+    chargerPlats(); // au chargement
+  </script>
 </body>
 </html>
