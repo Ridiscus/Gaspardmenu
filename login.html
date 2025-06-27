@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Connexion Admin</title>
   <style>
     body {
       background-color: #000;
-      color: #ffd700;
-      font-family: Arial, sans-serif;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
       margin: 0;
     }
 
-    h1 {
-      margin-bottom: 2rem;
-    }
-
-    form {
+    .login-container {
       background-color: #111;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
     }
 
     input {
+      width: 100%;
       padding: 0.7rem;
       margin-bottom: 1rem;
-      width: 100%;
       border: none;
       border-radius: 5px;
     }
 
     button {
-      background-color: #ffd700;
-      color: #000;
-      font-weight: bold;
-      padding: 0.7rem;
-      border: none;
-      border-radius: 5px;
       width: 100%;
+      padding: 0.7rem;
+      background-color: gold;
+      color: #000;
+      border: none;
+      font-weight: bold;
+      border-radius: 5px;
       cursor: pointer;
     }
 
     .error {
       color: red;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+  <div class="login-container">
+    <h1>Connexion Admin</h1>
+    <input type="email" id="email" placeholder="Adresse e-mail" required />
+    <input type="password" id="password" placeholder="Mot de passe" required />
+    <button onclick="login()">Se connecter</button>
+    <div class="error" id="error"></div>
+  </div>
 
-  <h1>Connexion Admin</h1>
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  <form onsubmit="verifierMotDePasse(event)">
-    <input type="password" id="motdepasse" placeholder="Mot de passe admin" required />
-    <button type="submit">Se connecter</button>
-    <div class="error" id="erreur"></div>
-  </form>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBBHgFgHj-lYqbOxWMcaKz2xjYdUiZR-Bo",
+      authDomain: "menuflash-611ea.firebaseapp.com",
+      projectId: "menuflash-611ea",
+      storageBucket: "menuflash-611ea.appspot.com",
+      messagingSenderId: "106561887216",
+      appId: "1:106561887216:web:21164e3b875159511d9b35"
+    };
 
-  <script>
-    function verifierMotDePasse(e) {
-      e.preventDefault();
-      const motdepasse = document.getElementById("motdepasse").value;
-      const erreur = document.getElementById("erreur");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-      if (motdepasse === "admin2025") {
+    window.login = async function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorDiv = document.getElementById("error");
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
         window.location.href = "dashboard.html";
-      } else {
-        erreur.textContent = "Mot de passe incorrect. Réessaye.";
+      } catch (error) {
+        errorDiv.textContent = "Identifiants incorrects.";
+        console.error(error);
       }
-    }
+    };
   </script>
-
 </body>
 </html>
