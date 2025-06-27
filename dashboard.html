@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin - Gaspard</title>
+  <title>Dashboard Admin - Gaspard</title>
   <style>
     body {
       background-color: #000;
@@ -12,16 +12,19 @@
       margin: 0;
       padding: 2rem;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 2rem;
     }
+
     form {
       background-color: #111;
       padding: 1rem;
       border-radius: 8px;
       margin-bottom: 2rem;
     }
+
     input, select, textarea {
       width: 100%;
       padding: 0.7rem;
@@ -29,6 +32,7 @@
       border: none;
       border-radius: 5px;
     }
+
     button {
       background-color: #ffd700;
       color: #000;
@@ -40,11 +44,35 @@
       margin-top: 1rem;
       width: 100%;
     }
+
+    .menu-list {
+      margin-top: 2rem;
+    }
+
+    .plat {
+      background: #222;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+    }
+
+    .logout-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: crimson;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
-  <h1>Bienvenue Admin</h1>
+  <h1>Dashboard Admin - Gaspard</h1>
+  <button class="logout-btn" onclick="logout()">Déconnexion</button>
 
   <form id="formAjout">
     <input type="text" id="nom" placeholder="Nom du plat" required />
@@ -64,10 +92,24 @@
     <button type="submit">Ajouter</button>
   </form>
 
+  <div class="menu-list" id="listePlats">
+    <!-- Plats listés ici -->
+  </div>
+
+  <!-- Firebase SDK -->
   <script type="module">
-    // Firebase import & config
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBBHgFgHj-lYqbOxWMcaKz2xjYdUiZR-Bo",
@@ -79,32 +121,68 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
+    const platsRef = collection(db, "plats");
+
+    // Vérifie si l'utilisateur est connecté
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+
+    // Déconnexion
+    window.logout = function () {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    };
 
     // Ajouter un plat
     const form = document.getElementById("formAjout");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const plat = {
         nom: document.getElementById("nom").value,
         prix: document.getElementById("prix").value,
         image: document.getElementById("image").value,
         description: document.getElementById("description").value,
         categorie: document.getElementById("categorie").value,
-        statut: document.getElementById("statut").value,
-        createdAt: new Date()
+        statut: document.getElementById("statut").value
       };
 
       try {
-        await addDoc(collection(db, "plats"), plat);
-        alert("✅ Plat ajouté avec succès !");
+        await addDoc(platsRef, plat);
+        alert("Plat ajouté avec succès !");
         form.reset();
-      } catch (error) {
-        alert("❌ Erreur d'ajout : " + error.message);
-        console.error("Erreur Firebase :", error);
+        chargerPlats();
+      } catch (err) {
+        console.error("Erreur d’ajout :", err);
+        alert("Erreur lors de l’ajout du plat.");
       }
     });
+
+    // Afficher les plats
+    async function chargerPlats() {
+      const snapshot = await getDocs(platsRef);
+      const liste = document.getElementById("listePlats");
+      liste.innerHTML = '';
+      snapshot.forEach(doc => {
+        const plat = doc.data();
+        const div = document.createElement("div");
+        div.className = "plat";
+        div.innerHTML = `
+          <strong>${plat.nom}</strong> - ${plat.prix} FCFA<br>
+          <em>${plat.categorie} | ${plat.statut}</em><br>
+          <p>${plat.description}</p>
+          <img src="${plat.image}" alt="${plat.nom}" style="width:100px;height:auto;margin-top:0.5rem;">
+        `;
+        liste.appendChild(div);
+      });
+    }
+
+    chargerPlats();
   </script>
 </body>
 </html>
