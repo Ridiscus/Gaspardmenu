@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Menu - Gaspard</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background-color: #fff;
@@ -14,10 +15,15 @@
     }
 
     header {
-      background-color: #000;
-      color: gold;
+      background-color: #fff;
       padding: 1rem;
       text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
     }
 
     nav ul {
@@ -25,33 +31,25 @@
       justify-content: center;
       list-style: none;
       padding: 0;
-      margin: 1rem 0;
-      flex-wrap: wrap;
-    }
-
-    nav ul li {
-      margin: 0 1rem;
+      margin: 1rem 0 0;
+      gap: 1.5rem;
     }
 
     nav ul li a {
       text-decoration: none;
-      color: black;
+      color: #000;
       font-weight: bold;
-      padding: 0.5rem;
-      border-radius: 5px;
+      padding-bottom: 0.2rem;
     }
 
     nav ul li a.active {
-      background-color: gold;
-      color: #000;
-    }
-
-    .menu-section {
-      padding: 1rem;
+      color: gold;
+      border-bottom: 2px solid gold;
     }
 
     .menu-category {
       display: none;
+      padding: 1rem;
     }
 
     .menu-category.active {
@@ -60,50 +58,57 @@
 
     .menu-item {
       display: flex;
-      align-items: flex-start;
-      margin: 1rem 0;
       gap: 1rem;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+      padding: 1rem 0;
+      align-items: center;
     }
 
     .menu-item img {
       width: 100px;
-      height: auto;
+      height: 100px;
       border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .menu-item-content {
+      flex-grow: 1;
     }
 
     .menu-item-content h3 {
-      margin: 0.3rem 0;
+      margin: 0 0 0.3rem;
     }
 
     .price {
       font-weight: bold;
-      margin: 0.5rem 0;
-      color: green;
+    }
+
+    .status {
+      font-style: italic;
+      color: #444;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
     }
 
     .order-btn {
       background-color: #000;
       color: #fff;
+      border: none;
       padding: 0.5rem 1rem;
-      text-decoration: none;
       border-radius: 5px;
-      font-size: 0.9rem;
-      display: inline-block;
-      margin-top: 0.5rem;
+      cursor: pointer;
     }
 
     footer {
-      text-align: center;
-      margin-top: 3rem;
-      padding: 1rem;
       background-color: #f2f2f2;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
     }
 
     .admin-btn {
       text-align: center;
-      margin-top: 2rem;
+      margin: 2rem 0 1rem;
     }
 
     .admin-btn a {
@@ -114,24 +119,48 @@
       text-decoration: none;
     }
 
-    @media screen and (max-width: 600px) {
-      .menu-item {
-        flex-direction: column;
-        align-items: center;
-      }
+    /* Mini popup */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 999;
+      display: none;
+    }
 
-      .menu-item img {
-        width: 80%;
-      }
+    .popup h3 {
+      margin-top: 0;
+    }
 
-      .order-btn {
-        width: 100%;
-        text-align: center;
-      }
+    .popup input {
+      width: 60px;
+      padding: 0.3rem;
+      margin: 0.5rem 0;
+    }
+
+    .popup-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      z-index: 998;
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Gaspard</h1>
     <nav>
@@ -145,25 +174,10 @@
   </header>
 
   <main class="menu-section">
-    <section id="Entrées" class="menu-category active">
-      <h2>Entrées</h2>
-      <div class="menu-items"></div>
-    </section>
-
-    <section id="Plats" class="menu-category">
-      <h2>Plats</h2>
-      <div class="menu-items"></div>
-    </section>
-
-    <section id="Desserts" class="menu-category">
-      <h2>Desserts</h2>
-      <div class="menu-items"></div>
-    </section>
-
-    <section id="Boissons" class="menu-category">
-      <h2>Boissons</h2>
-      <div class="menu-items"></div>
-    </section>
+    <section id="Entrées" class="menu-category active"><h2>Entrées</h2><div class="menu-items"></div></section>
+    <section id="Plats" class="menu-category"><h2>Plats</h2><div class="menu-items"></div></section>
+    <section id="Desserts" class="menu-category"><h2>Desserts</h2><div class="menu-items"></div></section>
+    <section id="Boissons" class="menu-category"><h2>Boissons</h2><div class="menu-items"></div></section>
 
     <div class="admin-btn">
       <a href="login.html">Connexion Admin</a>
@@ -173,6 +187,17 @@
   <footer>
     &copy; 2025 Gaspard | Service propulsé par MenuFlash
   </footer>
+
+  <!-- Pop-up -->
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <h3>Quantité souhaitée</h3>
+    <input type="number" id="quantite" min="1" value="1" />
+    <div class="popup-buttons">
+      <button id="validerCommande">Valider</button>
+      <button onclick="fermerPopup()">Annuler</button>
+    </div>
+  </div>
 
   <!-- Firebase SDK -->
   <script type="module">
@@ -192,6 +217,7 @@
     const db = getFirestore(app);
 
     const platsRef = collection(db, "plats");
+    let platSelectionne = null;
 
     async function chargerMenu() {
       const snapshot = await getDocs(platsRef);
@@ -207,25 +233,52 @@
         const container = categories[plat.categorie];
 
         if (container) {
-          container.innerHTML += `
-            <div class="menu-item">
-              <img src="${plat.image}" alt="${plat.nom}" />
-              <div class="menu-item-content">
-                <h3>${plat.nom}</h3>
-                <p>${plat.description}</p>
-                <div class="price">${plat.prix} FCFA</div>
-                <div><em>${plat.statut}</em></div>
-                <button class="order-btn" onclick="commander('${plat.nom}', '${plat.prix}')">Commander</button>
-              </div>
+          const div = document.createElement("div");
+          div.className = "menu-item";
+          div.innerHTML = `
+            <img src="${plat.image}" alt="${plat.nom}" />
+            <div class="menu-item-content">
+              <h3>${plat.nom}</h3>
+              <p>${plat.description}</p>
+              <div class="price">${plat.prix} FCFA</div>
+              <div class="status">${plat.statut}</div>
+              <button class="order-btn" data-nom="${plat.nom}" data-prix="${plat.prix}">Commander</button>
             </div>
           `;
+          container.appendChild(div);
         }
       });
+
+      // Activer les boutons "Commander"
+      document.querySelectorAll(".order-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          platSelectionne = {
+            nom: btn.dataset.nom,
+            prix: btn.dataset.prix
+          };
+          document.getElementById("quantite").value = 1;
+          document.getElementById("popup").style.display = "block";
+          document.getElementById("overlay").style.display = "block";
+        });
+      });
+    }
+
+    document.getElementById("validerCommande").addEventListener("click", () => {
+      const quantite = document.getElementById("quantite").value;
+      const message = `Bonjour, je souhaite commander ${quantite} x ${platSelectionne.nom} pour un total de ${platSelectionne.prix * quantite} FCFA.`;
+      const url = `https://wa.me/2250700000000?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+      fermerPopup();
+    });
+
+    function fermerPopup() {
+      document.getElementById("popup").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
     }
 
     chargerMenu();
 
-    // Onglets
+    // Gestion des onglets
     const links = document.querySelectorAll(".tab-link");
     const sections = document.querySelectorAll(".menu-category");
 
@@ -234,26 +287,11 @@
         e.preventDefault();
         links.forEach(l => l.classList.remove("active"));
         link.classList.add("active");
-
         sections.forEach(section => section.classList.remove("active"));
         const target = document.getElementById(link.dataset.target);
         if (target) target.classList.add("active");
       });
     });
-
-    // Fonction commander
-    window.commander = function(nom, prix) {
-      const quantite = prompt(`Combien de "${nom}" souhaitez-vous commander ?`);
-      if (!quantite || isNaN(quantite)) {
-        alert("Commande annulée.");
-        return;
-      }
-
-      const message = `Bonjour, je souhaite commander ${quantite} "${nom}" pour un total de ${quantite * prix} FCFA.`;
-      const numero = "2250700000000"; // Remplace par ton numéro WhatsApp
-      const lien = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
-      window.open(lien, "_blank");
-    };
   </script>
 </body>
 </html>
