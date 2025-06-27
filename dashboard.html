@@ -51,6 +51,58 @@
     }
   </style>
 </head>
+
+
+<!-- Firebase SDK -->
+<script type="module">
+  // Import des fonctions depuis les modules Firebase (version module)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBHgFgHj-lYqbOxWMcaKz2xjYdUiZR-Bo",
+    authDomain: "menuflash-611ea.firebaseapp.com",
+    projectId: "menuflash-611ea",
+    storageBucket: "menuflash-611ea.firebasestorage.app",
+    messagingSenderId: "106561887216",
+    appId: "1:106561887216:web:21164e3b875159511d9b35"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Exemple : ajouter un plat
+  const form = document.getElementById("formAjout");
+  const nomInput = document.getElementById("nom");
+  const prixInput = document.getElementById("prix");
+  const imageInput = document.getElementById("image");
+  const categorieInput = document.getElementById("categorie");
+  const descriptionInput = document.getElementById("description");
+  const statutInput = document.getElementById("statut");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    try {
+      await addDoc(collection(db, "plats"), {
+        nom: nomInput.value,
+        prix: prixInput.value,
+        image: imageInput.value,
+        categorie: categorieInput.value,
+        description: descriptionInput.value,
+        statut: statutInput.value
+      });
+
+      alert("Plat ajouté avec succès !");
+      form.reset();
+    } catch (e) {
+      console.error("Erreur d’ajout :", e);
+    }
+  });
+</script>
+
+
+
 <body>
   <h1>Dashboard Admin - Gaspard</h1>
 
