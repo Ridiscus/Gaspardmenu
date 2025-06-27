@@ -143,28 +143,30 @@
     };
 
     async function chargerMenu() {
-      const snapshot = await getDocs(platsRef);
-      snapshot.forEach(doc => {
-        const plat = doc.data();
-        const container = categories[plat.categorie];
+  const snapshot = await getDocs(platsRef);
+  snapshot.forEach(doc => {
+    const plat = doc.data();
+    const container = categories[plat.categorie];
 
-        if (container) {
-          container.innerHTML += `
-            <div class="menu-item">
-              <img src="${plat.image}" alt="${plat.nom}" />
-              <div>
-                <h3>${plat.nom}</h3>
-                <p>${plat.description}</p>
-                <div class="price">${plat.prix} FCFA</div>
-                <div><em>${plat.statut}</em></div>
-              </div>
-            </div>
-          `;
-        }
-      });
+    if (container) {
+      const message = encodeURIComponent(`Bonjour, je voudrais commander : ${plat.nom}`);
+      const whatsappLink = `https://wa.me/2250706366303?text=${message}`; // Remplace le numéro
+
+      container.innerHTML += `
+        <div class="menu-item">
+          <img src="${plat.image}" alt="${plat.nom}" />
+          <div>
+            <h3>${plat.nom}</h3>
+            <p>${plat.description}</p>
+            <div class="price">${plat.prix} FCFA</div>
+            <div><em>${plat.statut}</em></div>
+            <a href="${whatsappLink}" target="_blank" class="order-btn">Commander</a>
+          </div>
+        </div>
+      `;
     }
-
-    chargerMenu();
+  });
+}
 
     // Onglet navigation
     const links = document.querySelectorAll(".tab-link");
