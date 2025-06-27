@@ -4,103 +4,122 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Menu - Gaspard</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #fff;
       color: #000;
     }
 
     header {
-      background-color: #fff;
-      padding: 1rem;
+      background-color: #000;
+      padding: 1rem 0.5rem;
       text-align: center;
-      border-bottom: 1px solid #ddd;
     }
 
-    h1 {
+    header h1 {
+      color: #fff;
       margin: 0;
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
 
     nav ul {
-      display: flex;
-      justify-content: center;
       list-style: none;
       padding: 0;
       margin: 1rem 0 0;
+      display: flex;
+      justify-content: center;
       gap: 1.5rem;
     }
 
     nav ul li a {
+      color: #fff;
       text-decoration: none;
-      color: #000;
-      font-weight: bold;
-      padding-bottom: 0.2rem;
+      font-weight: normal;
     }
 
     nav ul li a.active {
-      color: gold;
-      border-bottom: 2px solid gold;
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    .menu-section {
+      padding: 1rem;
     }
 
     .menu-category {
       display: none;
-      padding: 1rem;
     }
 
     .menu-category.active {
       display: block;
     }
 
+    .menu-category h2 {
+      font-size: 1.4rem;
+      border-bottom: 2px solid #000;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
     .menu-item {
       display: flex;
       gap: 1rem;
-      border-bottom: 1px solid #eee;
-      padding: 1rem 0;
-      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1rem;
+      align-items: flex-start;
     }
 
     .menu-item img {
       width: 100px;
       height: 100px;
-      border-radius: 8px;
+      border-radius: 10px;
       object-fit: cover;
     }
 
     .menu-item-content {
-      flex-grow: 1;
+      flex: 1;
     }
 
     .menu-item-content h3 {
-      margin: 0 0 0.3rem;
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .menu-item-content p {
+      margin: 0.3rem 0;
     }
 
     .price {
       font-weight: bold;
+      margin-top: 0.3rem;
     }
 
-    .status {
+    .statut {
       font-style: italic;
-      color: #444;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
+      color: #555;
+      margin-top: 0.3rem;
     }
 
     .order-btn {
       background-color: #000;
       color: #fff;
-      border: none;
       padding: 0.5rem 1rem;
-      border-radius: 5px;
+      border-radius: 6px;
+      border: none;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 0.5rem;
     }
 
     footer {
-      background-color: #f2f2f2;
+      background-color: #000;
+      color: #fff;
       text-align: center;
       padding: 1rem;
       margin-top: 3rem;
@@ -108,7 +127,7 @@
 
     .admin-btn {
       text-align: center;
-      margin: 2rem 0 1rem;
+      margin-top: 2rem;
     }
 
     .admin-btn a {
@@ -118,49 +137,9 @@
       border-radius: 5px;
       text-decoration: none;
     }
-
-    /* Mini popup */
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      z-index: 999;
-      display: none;
-    }
-
-    .popup h3 {
-      margin-top: 0;
-    }
-
-    .popup input {
-      width: 60px;
-      padding: 0.3rem;
-      margin: 0.5rem 0;
-    }
-
-    .popup-buttons {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      display: none;
-      z-index: 998;
-    }
   </style>
 </head>
 <body>
-
   <header>
     <h1>Gaspard</h1>
     <nav>
@@ -174,10 +153,25 @@
   </header>
 
   <main class="menu-section">
-    <section id="Entrées" class="menu-category active"><h2>Entrées</h2><div class="menu-items"></div></section>
-    <section id="Plats" class="menu-category"><h2>Plats</h2><div class="menu-items"></div></section>
-    <section id="Desserts" class="menu-category"><h2>Desserts</h2><div class="menu-items"></div></section>
-    <section id="Boissons" class="menu-category"><h2>Boissons</h2><div class="menu-items"></div></section>
+    <section id="Entrées" class="menu-category active">
+      <h2>Entrées</h2>
+      <div class="menu-items"></div>
+    </section>
+
+    <section id="Plats" class="menu-category">
+      <h2>Plats</h2>
+      <div class="menu-items"></div>
+    </section>
+
+    <section id="Desserts" class="menu-category">
+      <h2>Desserts</h2>
+      <div class="menu-items"></div>
+    </section>
+
+    <section id="Boissons" class="menu-category">
+      <h2>Boissons</h2>
+      <div class="menu-items"></div>
+    </section>
 
     <div class="admin-btn">
       <a href="login.html">Connexion Admin</a>
@@ -187,17 +181,6 @@
   <footer>
     &copy; 2025 Gaspard | Service propulsé par MenuFlash
   </footer>
-
-  <!-- Pop-up -->
-  <div class="overlay" id="overlay"></div>
-  <div class="popup" id="popup">
-    <h3>Quantité souhaitée</h3>
-    <input type="number" id="quantite" min="1" value="1" />
-    <div class="popup-buttons">
-      <button id="validerCommande">Valider</button>
-      <button onclick="fermerPopup()">Annuler</button>
-    </div>
-  </div>
 
   <!-- Firebase SDK -->
   <script type="module">
@@ -215,9 +198,7 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
     const platsRef = collection(db, "plats");
-    let platSelectionne = null;
 
     async function chargerMenu() {
       const snapshot = await getDocs(platsRef);
@@ -241,44 +222,32 @@
               <h3>${plat.nom}</h3>
               <p>${plat.description}</p>
               <div class="price">${plat.prix} FCFA</div>
-              <div class="status">${plat.statut}</div>
-              <button class="order-btn" data-nom="${plat.nom}" data-prix="${plat.prix}">Commander</button>
+              <div class="statut">${plat.statut}</div>
+              <button class="order-btn" onclick="commander('${plat.nom}', ${plat.prix})">Commander</button>
             </div>
           `;
           container.appendChild(div);
         }
       });
-
-      // Activer les boutons "Commander"
-      document.querySelectorAll(".order-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          platSelectionne = {
-            nom: btn.dataset.nom,
-            prix: btn.dataset.prix
-          };
-          document.getElementById("quantite").value = 1;
-          document.getElementById("popup").style.display = "block";
-          document.getElementById("overlay").style.display = "block";
-        });
-      });
-    }
-
-    document.getElementById("validerCommande").addEventListener("click", () => {
-      const quantite = document.getElementById("quantite").value;
-      const message = `Bonjour, je souhaite commander ${quantite} x ${platSelectionne.nom} pour un total de ${platSelectionne.prix * quantite} FCFA.`;
-      const url = `https://wa.me/2250700000000?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
-      fermerPopup();
-    });
-
-    function fermerPopup() {
-      document.getElementById("popup").style.display = "none";
-      document.getElementById("overlay").style.display = "none";
     }
 
     chargerMenu();
 
-    // Gestion des onglets
+    // Fonction Commander avec prompt pour quantité
+    window.commander = function(nom, prix) {
+      const qte = prompt(`Combien de "${nom}" souhaitez-vous commander ?`, 1);
+      if (qte && !isNaN(qte) && qte > 0) {
+        const total = prix * qte;
+        const message = `Bonjour, je souhaite commander ${qte} x ${nom} pour un total de ${total} FCFA.`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappLink = `https://wa.me/2250700000000?text=${encodedMessage}`;
+        window.open(whatsappLink, '_blank');
+      } else {
+        alert("Quantité invalide.");
+      }
+    };
+
+    // Navigation onglets
     const links = document.querySelectorAll(".tab-link");
     const sections = document.querySelectorAll(".menu-category");
 
