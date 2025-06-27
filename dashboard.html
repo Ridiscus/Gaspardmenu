@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard Admin - Gaspard</title>
   <style>
     body {
       background-color: #000;
       color: #ffd700;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
       padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
     }
     form {
       background-color: #111;
@@ -21,8 +26,8 @@
       width: 100%;
       padding: 0.7rem;
       margin: 0.5rem 0;
-      border-radius: 5px;
       border: none;
+      border-radius: 5px;
     }
     button {
       background-color: #ffd700;
@@ -32,27 +37,19 @@
       font-weight: bold;
       border-radius: 5px;
       cursor: pointer;
-      width: 100%;
       margin-top: 1rem;
-    }
-    .menu-list {
-      margin-top: 2rem;
-    }
-    .plat {
-      background: #222;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 5px;
+      width: 100%;
     }
   </style>
 </head>
+
 <body>
   <h1>Dashboard Admin - Gaspard</h1>
 
   <form id="formAjout">
-    <input type="text" id="nom" placeholder="Nom du plat" required>
-    <input type="text" id="prix" placeholder="Prix" required>
-    <input type="text" id="image" placeholder="Lien de l'image" required>
+    <input type="text" id="nom" placeholder="Nom du plat" required />
+    <input type="text" id="prix" placeholder="Prix" required />
+    <input type="text" id="image" placeholder="Lien de l'image" required />
     <textarea id="description" placeholder="Description du plat" rows="3" required></textarea>
     <select id="categorie">
       <option value="Entrées">Entrée</option>
@@ -67,19 +64,10 @@
     <button type="submit">Ajouter</button>
   </form>
 
-  <div class="menu-list" id="listePlats"></div>
-
-  <!-- Firebase SDK -->
   <script type="module">
+    // Firebase import & config
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      deleteDoc,
-      doc
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBBHgFgHj-lYqbOxWMcaKz2xjYdUiZR-Bo",
@@ -92,56 +80,31 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const platsCollection = collection(db, "plats");
 
+    // Ajouter un plat
     const form = document.getElementById("formAjout");
-    const listePlats = document.getElementById("listePlats");
-
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const plat = {
-        nom: form.nom.value,
-        prix: form.prix.value,
-        image: form.image.value,
-        description: form.description.value,
-        categorie: form.categorie.value,
-        statut: form.statut.value
+        nom: document.getElementById("nom").value,
+        prix: document.getElementById("prix").value,
+        image: document.getElementById("image").value,
+        description: document.getElementById("description").value,
+        categorie: document.getElementById("categorie").value,
+        statut: document.getElementById("statut").value,
+        createdAt: new Date()
       };
+
       try {
-        await addDoc(platsCollection, plat);
+        await addDoc(collection(db, "plats"), plat);
+        alert("✅ Plat ajouté avec succès !");
         form.reset();
-        chargerPlats();
-      } catch (err) {
-        alert("Erreur d'ajout : " + err.message);
+      } catch (error) {
+        alert("❌ Erreur d'ajout : " + error.message);
+        console.error("Erreur Firebase :", error);
       }
     });
-
-    async function chargerPlats() {
-      listePlats.innerHTML = "";
-      const snapshot = await getDocs(platsCollection);
-      snapshot.forEach(docSnap => {
-        const plat = docSnap.data();
-        const id = docSnap.id;
-
-        const div = document.createElement("div");
-        div.className = "plat";
-        div.innerHTML = `
-          <strong>${plat.nom}</strong> - ${plat.prix} FCFA<br>
-          <em>${plat.categorie} | ${plat.statut}</em><br>
-          <p>${plat.description}</p>
-          <img src="${plat.image}" style="width:100px;height:auto;margin-top:0.5rem;"><br>
-          <button onclick="supprimerPlat('${id}')">Supprimer</button>
-        `;
-        listePlats.appendChild(div);
-      });
-    }
-
-    window.supprimerPlat = async function(id) {
-      await deleteDoc(doc(db, "plats", id));
-      chargerPlats();
-    }
-
-    chargerPlats(); // au chargement
   </script>
 </body>
 </html>
