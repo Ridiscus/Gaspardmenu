@@ -2,63 +2,26 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Menu - Gaspard</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #000;
-      color: #fff;
-    }
-
-    header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-      background-color: #111;
-    }
-
-    nav ul {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0;
-    }
-
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-    }
-
-    nav ul li a.active {
-      color: gold;
-      font-weight: bold;
-    }
-
-    .menu-category { display: none; padding: 1rem; }
+    .menu-category { display: none; }
     .menu-category.active { display: block; }
+    nav ul li a.active { color: gold; font-weight: bold; }
 
     .menu-item {
       display: flex;
+      margin: 1rem 0;
       gap: 1rem;
-      margin-bottom: 1.5rem;
-      background-color: #111;
-      padding: 1rem;
-      border-radius: 8px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1rem;
     }
 
     .menu-item img {
       width: 100px;
       height: auto;
-      border-radius: 5px;
-    }
-
-    .menu-item-content h3 {
-      margin: 0 0 0.3rem;
-      color: #ffd700;
+      border-radius: 8px;
     }
 
     .price {
@@ -66,37 +29,16 @@
       margin-top: 0.5rem;
     }
 
-    .order-btn {
-      display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      background-color: #ffd700;
-      color: #000;
-      border-radius: 5px;
-      text-decoration: none;
-    }
-
-    .order-btn.disabled {
-      background-color: #555;
-      pointer-events: none;
-    }
-
-    .status {
-      font-size: 0.9rem;
-      color: #f33;
-      margin-top: 0.2rem;
-    }
-
     footer {
       text-align: center;
+      margin-top: 3rem;
       padding: 1rem;
-      background-color: #111;
-      color: #888;
+      background-color: #f2f2f2;
     }
 
     .admin-btn {
       text-align: center;
-      margin: 2rem 0;
+      margin-top: 2rem;
     }
 
     .admin-btn a {
@@ -105,7 +47,6 @@
       padding: 0.7rem 1.5rem;
       border-radius: 5px;
       text-decoration: none;
-      border: 1px solid #ffd700;
     }
   </style>
 </head>
@@ -114,19 +55,34 @@
     <h1>Gaspard</h1>
     <nav>
       <ul>
-        <li><a href="#" class="tab-link active" data-target="entrees">ENTRÉES</a></li>
-        <li><a href="#" class="tab-link" data-target="plats">PLATS</a></li>
-        <li><a href="#" class="tab-link" data-target="desserts">DESSERTS</a></li>
-        <li><a href="#" class="tab-link" data-target="boissons">BOISSONS</a></li>
+        <li><a href="#" class="tab-link active" data-target="Entrées">ENTRÉES</a></li>
+        <li><a href="#" class="tab-link" data-target="Plats">PLATS</a></li>
+        <li><a href="#" class="tab-link" data-target="Desserts">DESSERTS</a></li>
+        <li><a href="#" class="tab-link" data-target="Boissons">BOISSONS</a></li>
       </ul>
     </nav>
   </header>
 
   <main class="menu-section">
-    <section id="entrees" class="menu-category active"><h2>Entrées</h2></section>
-    <section id="plats" class="menu-category"><h2>Plats</h2></section>
-    <section id="desserts" class="menu-category"><h2>Desserts</h2></section>
-    <section id="boissons" class="menu-category"><h2>Boissons</h2></section>
+    <section id="Entrées" class="menu-category active">
+      <h2>Entrées</h2>
+      <div class="menu-items"></div>
+    </section>
+
+    <section id="Plats" class="menu-category">
+      <h2>Plats</h2>
+      <div class="menu-items"></div>
+    </section>
+
+    <section id="Desserts" class="menu-category">
+      <h2>Desserts</h2>
+      <div class="menu-items"></div>
+    </section>
+
+    <section id="Boissons" class="menu-category">
+      <h2>Boissons</h2>
+      <div class="menu-items"></div>
+    </section>
 
     <div class="admin-btn">
       <a href="login.html">Connexion Admin</a>
@@ -137,25 +93,7 @@
     &copy; 2025 Gaspard | Service propulsé par MenuFlash
   </footer>
 
-  <!-- Onglets JS -->
-  <script>
-    const links = document.querySelectorAll(".tab-link");
-    const sections = document.querySelectorAll(".menu-category");
-
-    links.forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        links.forEach(l => l.classList.remove("active"));
-        link.classList.add("active");
-
-        sections.forEach(section => section.classList.remove("active"));
-        const target = document.getElementById(link.dataset.target);
-        if (target) target.classList.add("active");
-      });
-    });
-  </script>
-
-  <!-- Firebase JS -->
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -172,38 +110,54 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const categories = {
-      "Entrées": "entrees",
-      "Plats": "plats",
-      "Desserts": "desserts",
-      "Boissons": "boissons"
-    };
+    const platsRef = collection(db, "plats");
 
     async function chargerMenu() {
-      const querySnapshot = await getDocs(collection(db, "plats"));
-      querySnapshot.forEach((doc) => {
+      const snapshot = await getDocs(platsRef);
+      const categories = {
+        "Entrées": document.querySelector("#Entrées .menu-items"),
+        "Plats": document.querySelector("#Plats .menu-items"),
+        "Desserts": document.querySelector("#Desserts .menu-items"),
+        "Boissons": document.querySelector("#Boissons .menu-items")
+      };
+
+      snapshot.forEach(doc => {
         const plat = doc.data();
-        const sectionId = categories[plat.categorie];
-        const section = document.getElementById(sectionId);
+        const container = categories[plat.categorie];
 
-        const platHTML = `
-          <div class="menu-item">
-            <img src="${plat.image}" alt="${plat.nom}" />
-            <div class="menu-item-content">
-              <h3>${plat.nom}</h3>
-              <p>${plat.description}</p>
-              <div class="price">${plat.prix} FCFA</div>
-              <div class="status">${plat.statut === 'Indisponible' ? '❌ Indisponible' : '✅ Disponible'}</div>
-              <a href="#" class="order-btn ${plat.statut === 'Indisponible' ? 'disabled' : ''}">Commander</a>
+        if (container) {
+          container.innerHTML += `
+            <div class="menu-item">
+              <img src="${plat.image}" alt="${plat.nom}" />
+              <div>
+                <h3>${plat.nom}</h3>
+                <p>${plat.description}</p>
+                <div class="price">${plat.prix} FCFA</div>
+                <div><em>${plat.statut}</em></div>
+              </div>
             </div>
-          </div>
-        `;
-
-        if (section) section.insertAdjacentHTML('beforeend', platHTML);
+          `;
+        }
       });
     }
 
     chargerMenu();
+
+    // Gestion des onglets
+    const links = document.querySelectorAll(".tab-link");
+    const sections = document.querySelectorAll(".menu-category");
+
+    links.forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        links.forEach(l => l.classList.remove("active"));
+        link.classList.add("active");
+
+        sections.forEach(section => section.classList.remove("active"));
+        const target = document.getElementById(link.dataset.target);
+        if (target) target.classList.add("active");
+      });
+    });
   </script>
 </body>
 </html>
